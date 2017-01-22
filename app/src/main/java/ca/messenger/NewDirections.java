@@ -8,9 +8,12 @@ import android.text.Html;
 import com.google.maps.DirectionsApi;
 import com.google.maps.GeoApiContext;
 import com.google.maps.model.DirectionsResult;
+import java.util.ArrayList;
 
 public class NewDirections extends Activity{
-    public void getNewDirections() throws Exception{
+
+    public ArrayList<String> getNewDirections() throws Exception{
+        ArrayList<String> steplist = new ArrayList<String>();
         String string;
         String simplifiedHTMLString;
         GeoApiContext gac = new GeoApiContext().setApiKey("AIzaSyDwdDONSqbgjvLvFqdzcnXE_sFeJ1Qw3Vs");
@@ -20,7 +23,9 @@ public class NewDirections extends Activity{
             simplifiedHTMLString =  string;
             // Start index from 1 not zero
             int index = i + 1;
-            System.out.println("Index: " + index + " " + Html.fromHtml(Html.fromHtml(simplifiedHTMLString).toString()));
+            String finalSteps = "Index: " + index + " " + Html.fromHtml(Html.fromHtml(simplifiedHTMLString).toString());
+            steplist.add(finalSteps);
         }
+        return steplist;
     }
 }
