@@ -9,6 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -18,12 +21,17 @@ public class MainActivity extends AppCompatActivity {
 
         //Variables
         GoogleDirections googleDirections = new GoogleDirections();
+        ArrayList<String> steplist = new ArrayList<String>();
 
         //Get Directions
         googleDirections.getDirections(getApplicationContext());
         NewDirections newDirections = new NewDirections();
         try {
-            newDirections.getNewDirections();
+
+            steplist = newDirections.getNewDirections();
+            for(int i = 0; i < steplist.size(); i++){
+                System.out.println(steplist.get(i));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
