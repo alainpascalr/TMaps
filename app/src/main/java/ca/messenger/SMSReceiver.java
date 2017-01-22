@@ -41,7 +41,7 @@ public class SMSReceiver extends BroadcastReceiver{
                 //str += "Request from " + phoneNumber;
                 //str += ": ";
                 String messageBody = msgs.getMessageBody().toString();
-                if (messageBody.contains("#directions")){
+                if (messageBody.contains("#directions") || messageBody.contains("#Directions")){
                     String[] messageBodyArray = messageBody.split("From ");
                     messageBodyArray = messageBodyArray[1].split(" to ");
                     String origin = messageBodyArray[0];
