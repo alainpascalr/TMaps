@@ -5,19 +5,13 @@ package ca.messenger;
 
 import android.app.Activity;
 import android.text.Html;
-import android.text.Layout;
-
-import com.akexorcist.googledirection.request.DirectionRequest;
 import com.google.maps.DirectionsApi;
 import com.google.maps.GeoApiContext;
 import com.google.maps.model.DirectionsResult;
 import com.google.maps.model.TravelMode;
-
 import java.util.ArrayList;
 
 public class GoogleDirections extends Activity{
-
-    private GeoApiContext context;
 
     public ArrayList<String> getNewDirections(String origin, String destination, String mode) throws Exception{
         ArrayList<String> steplist = new ArrayList<String>();
@@ -48,16 +42,13 @@ public class GoogleDirections extends Activity{
                     .destination(destination).await();
         }
 
-
         for(int i = 0; i<result.routes[0].legs[0].steps.length; i++ ){
             string = result.routes[0].legs[0].steps[i].htmlInstructions;
-//            string = result.routes[0].legs[0].steps[i].htmlInstructions + " for " + result.routes[0].legs[0].steps[i].distance;
             simplifiedHTMLString =  string;
             // Start index from 1 not zero
             int index = i + 1;
             String finalSteps = "Step: " + index + " " + Html.fromHtml(Html.fromHtml(simplifiedHTMLString).toString());
             steplist.add(finalSteps);
-//            System.out.println(finalSteps);
         }
         return steplist;
     }
