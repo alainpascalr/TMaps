@@ -32,9 +32,13 @@ public class MainActivity extends AppCompatActivity {
     Button getYellowPagesData;
     TextView yellowPagesResult;
 
+    //Google Places Origin
+    String origin = "Ottawa";
+    String destination = "Toronto";
+
     //Yellow Pages Variables
     String what = "Restaurants";
-    String where = "Toronto";
+//    String where = "Montreal";
     //Number of results to return in each page
     int pgLen = 5;
     //Radius in kilometer
@@ -65,15 +69,9 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<String> steplist = new ArrayList<String>();
 
         //Get Directions
-        NewDirections newDirections = new NewDirections();
-        try {
-            steplist = newDirections.getNewDirections();
-            for(int i = 0; i < steplist.size(); i++){
-                System.out.println(steplist.get(i));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        GoogleDirections googleDirections = new GoogleDirections();
+        googleDirections.getDirections(getApplicationContext(), origin, destination);
+
         // Check internet connection
         isInternetOn();
         intentFilter = new IntentFilter();
@@ -85,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         getYellowPagesData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new JsonTask().execute("http://api.sandbox.yellowapi.com/FindBusiness/?what="+what+"+&where="+where+"&pgLen="+pgLen+"&pg=1&dist="+dist+"&fmt="+fmt+"&lang="+lang+"&UID="+UID+"&apikey="+YellowAPI+"\n");
+                new JsonTask().execute("http://api.sandbox.yellowapi.com/FindBusiness/?what="+what+"+&where="+destination+"&pgLen="+pgLen+"&pg=1&dist="+dist+"&fmt="+fmt+"&lang="+lang+"&UID="+UID+"&apikey="+YellowAPI+"\n");
             }
         });
     }

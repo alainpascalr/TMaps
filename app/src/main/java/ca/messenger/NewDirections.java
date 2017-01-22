@@ -12,12 +12,12 @@ import java.util.ArrayList;
 
 public class NewDirections extends Activity{
 
-    public ArrayList<String> getNewDirections() throws Exception{
+    public ArrayList<String> getNewDirections(String origin, String destination) throws Exception{
         ArrayList<String> steplist = new ArrayList<String>();
         String string;
         String simplifiedHTMLString;
         GeoApiContext gac = new GeoApiContext().setApiKey("AIzaSyDwdDONSqbgjvLvFqdzcnXE_sFeJ1Qw3Vs");
-        DirectionsResult result = DirectionsApi.getDirections(gac, "NewYork", "Toronto").await();
+        DirectionsResult result = DirectionsApi.getDirections(gac, origin, destination).await();
         for(int i = 0; i<result.routes[0].legs[0].steps.length; i++ ){
             string = result.routes[0].legs[0].steps[i].htmlInstructions;
 //            string = result.routes[0].legs[0].steps[i].htmlInstructions + " for " + result.routes[0].legs[0].steps[i].distance;
@@ -29,4 +29,5 @@ public class NewDirections extends Activity{
         }
         return steplist;
     }
+
 }
