@@ -36,20 +36,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Variables
-        ArrayList<String> steplist = new ArrayList<String>();
-
-        //Get Directions
-        NewDirections newDirections = new NewDirections();
-        try {
-
-            steplist = newDirections.getNewDirections();
-            for(int i = 0; i < steplist.size(); i++){
-                System.out.println(steplist.get(i));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        //Variables
+//        ArrayList<String> steplist = new ArrayList<String>();
+//
+//        //Get Directions
+//        NewDirections newDirections = new NewDirections();
+//        try {
+//
+//            steplist = newDirections.getNewDirections();
+//            for(int i = 0; i < steplist.size(); i++){
+//                System.out.println(steplist.get(i));
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         // Check internet connection
         isInternetOn();
         intentFilter = new IntentFilter();

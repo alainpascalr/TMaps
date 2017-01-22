@@ -14,6 +14,8 @@ import android.telephony.SmsMessage;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import static android.provider.Telephony.Sms.Intents.SMS_RECEIVED_ACTION;
 
 /**
@@ -34,8 +36,7 @@ public class SMSReceiver extends BroadcastReceiver{
             String phoneNumber = "";
             //for (int i = 0; i < msgs.length; i++) {
                 //msgs[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
-                int i = 0;
-                msgs = SmsMessage.createFromPdu((byte[]) pdus[i]);
+                msgs = SmsMessage.createFromPdu((byte[]) pdus[0]);
                 phoneNumber = msgs.getOriginatingAddress();
                 //str += "Request from " + phoneNumber;
                 //str += ": ";
@@ -66,9 +67,6 @@ public class SMSReceiver extends BroadcastReceiver{
                 str += "\n";
             //}
 
-            SmsManager smsManager = SmsManager.getDefault();
-            smsManager.sendTextMessage(phoneNumber, null, str, null, null);
-
             //---display the new SMS message---
             Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
 
@@ -77,6 +75,23 @@ public class SMSReceiver extends BroadcastReceiver{
             broadcastIntent.setAction("SMS_RECEIVED_ACTION");
             broadcastIntent.putExtra("sms", str);
             context.sendBroadcast(broadcastIntent);
+
+            //Variables
+            ArrayList<String> steplist = new ArrayList<String>();
+
+            //Get Directions
+            NewDirections newDirections = new NewDirections();
+            try {
+
+                steplist = newDirections.getNewDirections(origin, destination);
+                for(int j = 0; j < steplist.size(); j++){
+                    System.out.println(steplist.get(j));
+                    SmsManager smsManager = SmsManager.getDefault();
+                    smsManager.sendTextMessage(phoneNumber, null, steplist.get(j), null, null);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
