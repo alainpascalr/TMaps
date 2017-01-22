@@ -56,6 +56,8 @@ public class SMSReceiver extends BroadcastReceiver{
                     System.out.println(steplist.get(j));
                 }
                 SmsManager smsManager = SmsManager.getDefault();
+                smsManager.sendTextMessage(phoneNumber, null, "Start: " + or, null, null);
+
                 for (int k = 0; k < steplist.size(); k++) {
                     smsManager.sendTextMessage(phoneNumber, null, steplist.get(k), null, null);
                 }
