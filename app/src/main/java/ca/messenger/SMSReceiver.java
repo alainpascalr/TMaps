@@ -41,12 +41,13 @@ public class SMSReceiver extends BroadcastReceiver{
                 //str += "Request from " + phoneNumber;
                 //str += ": ";
                 String messageBody = msgs.getMessageBody().toString();
-                String[] messageBodyArray = messageBody.split("From ");
-                messageBodyArray = messageBodyArray[1].split(" to ");
-                String origin = messageBodyArray[0];
-                messageBodyArray = messageBodyArray[1].split(" via ");
-                String destination = messageBodyArray[0];
-                String travelMode = messageBodyArray[1];
+                if (messageBody.contains("#directions")){
+                    String[] messageBodyArray = messageBody.split("From ");
+                    messageBodyArray = messageBodyArray[1].split(" to ");
+                    String origin = messageBodyArray[0];
+                    messageBodyArray = messageBodyArray[1].split(" via ");
+                    String destination = messageBodyArray[0];
+                    String travelMode = messageBodyArray[1];
                 /*int j = 1;
                 while (j < messageBodyArray.length) {
                     if (messageBodyArray[j] == "to")
@@ -60,38 +61,40 @@ public class SMSReceiver extends BroadcastReceiver{
                     destination += messageBodyArray[j] + " ";
                     j++;
                 }*/
-                Log.d("Origin", origin);
-                Log.d("Destination", destination);
-                Log.d("Travel Mode", travelMode);
-                str += "Origin: " + origin + "Destination: " + destination + "Travel Mode: " + travelMode;
-                str += "\n";
-            //}
+                    Log.d("Origin", origin);
+                    Log.d("Destination", destination);
+                    Log.d("Travel Mode", travelMode);
+                    str += "Origin: " + origin + "Destination: " + destination + "Travel Mode: " + travelMode;
+                    str += "\n";
+                    //}
 
-            //---display the new SMS message---
-            Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
+                    //---display the new SMS message---
+                    Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
 
-            //---send a broadcast intent to update the SMS received in the activity---
-            Intent broadcastIntent = new Intent();
-            broadcastIntent.setAction("SMS_RECEIVED_ACTION");
-            broadcastIntent.putExtra("sms", str);
-            context.sendBroadcast(broadcastIntent);
+                    //---send a broadcast intent to update the SMS received in the activity---
+                    Intent broadcastIntent = new Intent();
+                    broadcastIntent.setAction("SMS_RECEIVED_ACTION");
+                    broadcastIntent.putExtra("sms", str);
+                    context.sendBroadcast(broadcastIntent);
 
-            //Variables
-            ArrayList<String> steplist = new ArrayList<String>();
+                    //Variables
+                    ArrayList<String> steplist = new ArrayList<String>();
 
-            //Get Directions
-            NewDirections newDirections = new NewDirections();
-            try {
+                    //Get Directions
+                    NewDirections newDirections = new NewDirections();
+                    try {
 
-                steplist = newDirections.getNewDirections(origin, destination);
-                for(int j = 0; j < steplist.size(); j++){
-                    System.out.println(steplist.get(j));
-                    SmsManager smsManager = SmsManager.getDefault();
-                    smsManager.sendTextMessage(phoneNumber, null, steplist.get(j), null, null);
+                        steplist = newDirections.getNewDirections(origin, destination);
+                        for(int j = 0; j < steplist.size(); j++){
+                            System.out.println(steplist.get(j));
+                            SmsManager smsManager = SmsManager.getDefault();
+                            smsManager.sendTextMessage(phoneNumber, null, steplist.get(j), null, null);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+
         }
     }
 
