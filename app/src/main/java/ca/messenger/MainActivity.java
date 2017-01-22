@@ -83,31 +83,31 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
     }
 
-//    Check internet connection method
-public final boolean isInternetOn() {
-    // get Connectivity Manager object to check connection
-    ConnectivityManager connectivityManager =
-            (ConnectivityManager) getSystemService(getBaseContext().CONNECTIVITY_SERVICE);
+    //    Check internet connection method
+    public final boolean isInternetOn() {
+        // get Connectivity Manager object to check connection
+        ConnectivityManager connectivityManager =
+                (ConnectivityManager) getSystemService(getBaseContext().CONNECTIVITY_SERVICE);
 
-    // Check for network connections
-    if (connectivityManager.getNetworkInfo(0).getState() == android.net.NetworkInfo.State.CONNECTED ||
-            connectivityManager.getNetworkInfo(0).getState() == android.net.NetworkInfo.State.CONNECTING ||
-            connectivityManager.getNetworkInfo(1).getState() == android.net.NetworkInfo.State.CONNECTING ||
-            connectivityManager.getNetworkInfo(1).getState() == android.net.NetworkInfo.State.CONNECTED) {
+        // Check for network connections
+        if (connectivityManager.getNetworkInfo(0).getState() == android.net.NetworkInfo.State.CONNECTED ||
+                connectivityManager.getNetworkInfo(0).getState() == android.net.NetworkInfo.State.CONNECTING ||
+                connectivityManager.getNetworkInfo(1).getState() == android.net.NetworkInfo.State.CONNECTING ||
+                connectivityManager.getNetworkInfo(1).getState() == android.net.NetworkInfo.State.CONNECTED) {
 
-        // if connected with internet
-        Toast.makeText(this, " Connected ", Toast.LENGTH_LONG).show();
-        return true;
+            // if connected with internet
+            Toast.makeText(this, " Connected ", Toast.LENGTH_LONG).show();
+            return true;
 
-    } else if (
-            connectivityManager.getNetworkInfo(0).getState() == android.net.NetworkInfo.State.DISCONNECTED ||
-                    connectivityManager.getNetworkInfo(1).getState() == android.net.NetworkInfo.State.DISCONNECTED) {
+        } else if (
+                connectivityManager.getNetworkInfo(0).getState() == android.net.NetworkInfo.State.DISCONNECTED ||
+                        connectivityManager.getNetworkInfo(1).getState() == android.net.NetworkInfo.State.DISCONNECTED) {
 
-        Toast.makeText(this, " Not Connected ", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, " Not Connected ", Toast.LENGTH_LONG).show();
+            return false;
+        }
         return false;
     }
-    return false;
-}
 
     // Yellow pages API
     private class JsonTask extends AsyncTask<String, String, String> {
@@ -162,4 +162,3 @@ public final boolean isInternetOn() {
         }
     }
 }
-

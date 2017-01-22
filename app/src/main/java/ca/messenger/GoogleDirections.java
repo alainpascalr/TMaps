@@ -22,9 +22,9 @@ public class GoogleDirections extends Activity{
         DirectionsResult result;
         if(mode.equalsIgnoreCase("Driving")){
             result = DirectionsApi.newRequest(gac)
-                .mode(TravelMode.DRIVING)
-                .origin(origin)
-                .destination(destination).await();
+                    .mode(TravelMode.DRIVING)
+                    .origin(origin)
+                    .destination(destination).await();
         }else if(mode.equalsIgnoreCase("Walking")){
             result = DirectionsApi.newRequest(gac)
                     .mode(TravelMode.WALKING)
