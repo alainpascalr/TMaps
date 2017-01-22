@@ -25,25 +25,27 @@ public class SMSReceiver extends BroadcastReceiver{
     public void onReceive(Context context, Intent intent) {
         //---get the SMS message passed in---
         Bundle bundle = intent.getExtras();
-        SmsMessage[] msgs = null;
+        SmsMessage msgs = null;
         String str = "";
         if (bundle != null) {
             //---retrieve the SMS message received---
             Object[] pdus = (Object[]) bundle.get("pdus");
-            msgs = new SmsMessage[pdus.length];
+            //msgs = new SmsMessage[pdus.length];
             String phoneNumber = "";
-            for (int i = 0; i < msgs.length; i++) {
-                msgs[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
-                phoneNumber = msgs[i].getOriginatingAddress();
-                str += "Request from " + phoneNumber;
-                str += ": ";
-                String messageBody = msgs[i].getMessageBody().toString();
+            //for (int i = 0; i < msgs.length; i++) {
+                //msgs[i] = SmsMessage.createFromPdu((byte[]) pdus[i]);
+                int i = 0;
+                msgs = SmsMessage.createFromPdu((byte[]) pdus[i]);
+                phoneNumber = msgs.getOriginatingAddress();
+                //str += "Request from " + phoneNumber;
+                //str += ": ";
+                String messageBody = msgs.getMessageBody().toString();
                 String[] messageBodyArray = messageBody.split("From ");
-                messageBodyArray = messageBodyArray[i].split(" to ");
-                String origin = messageBodyArray[i];
-                messageBodyArray = messageBodyArray[i].split(" via ");
-                String destination = messageBodyArray[i];
-                String travelMode = messageBodyArray[i];
+                messageBodyArray = messageBodyArray[1].split(" to ");
+                String origin = messageBodyArray[0];
+                messageBodyArray = messageBodyArray[1].split(" via ");
+                String destination = messageBodyArray[0];
+                String travelMode = messageBodyArray[1];
                 /*int j = 1;
                 while (j < messageBodyArray.length) {
                     if (messageBodyArray[j] == "to")
@@ -60,9 +62,9 @@ public class SMSReceiver extends BroadcastReceiver{
                 Log.d("Origin", origin);
                 Log.d("Destination", destination);
                 Log.d("Travel Mode", travelMode);
-                str += "O: " + origin + "D: " + destination + "TM: " + travelMode;
+                str += "Origin: " + origin + "Destination: " + destination + "Travel Mode: " + travelMode;
                 str += "\n";
-            }
+            //}
 
             SmsManager smsManager = SmsManager.getDefault();
             smsManager.sendTextMessage(phoneNumber, null, str, null, null);
