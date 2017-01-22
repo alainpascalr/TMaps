@@ -20,11 +20,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //Variables
-        GoogleDirections googleDirections = new GoogleDirections();
         ArrayList<String> steplist = new ArrayList<String>();
 
         //Get Directions
-        googleDirections.getDirections(getApplicationContext());
         NewDirections newDirections = new NewDirections();
         try {
 

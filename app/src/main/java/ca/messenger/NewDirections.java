@@ -19,7 +19,7 @@ public class NewDirections extends Activity{
         GeoApiContext gac = new GeoApiContext().setApiKey("AIzaSyDwdDONSqbgjvLvFqdzcnXE_sFeJ1Qw3Vs");
         DirectionsResult result = DirectionsApi.getDirections(gac, "NewYork", "Toronto").await();
         for(int i = 0; i<result.routes[0].legs[0].steps.length; i++ ){
-            string = result.routes[0].legs[0].steps[i].htmlInstructions + " END";
+            string = result.routes[0].legs[0].steps[i].htmlInstructions;
 //            string = result.routes[0].legs[0].steps[i].htmlInstructions + " for " + result.routes[0].legs[0].steps[i].distance;
             simplifiedHTMLString =  string;
             // Start index from 1 not zero
