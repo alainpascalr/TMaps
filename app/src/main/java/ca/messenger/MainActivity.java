@@ -2,17 +2,17 @@ package ca.messenger;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.BroadcastReceiver;
 import android.content.IntentFilter;
-import android.view.View;
-import android.widget.Button;
+import android.telephony.SmsManager;
+import android.util.Log;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-//    Button btnSendSMS;
     IntentFilter intentFilter;
     private BroadcastReceiver intentReceiver = new BroadcastReceiver() {
         @Override
@@ -34,11 +34,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         registerReceiver(intentReceiver, intentFilter);
         super.onResume();
-    }
-
-    public void sendSMS(String phoneNumber, String smsBody){
-        SmsManager smsManager = SmsManager.getDefault();
-        smsManager.sendTextMessage(phoneNumber, null, smsBody, null, null);
     }
 }
 
