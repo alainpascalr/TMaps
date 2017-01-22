@@ -44,21 +44,30 @@ public class SMSReceiver extends BroadcastReceiver{
                 Log.d("Travel Mode", travelMode);
                 str += "Origin: " + origin + "Destination: " + destination + "Travel Mode: " + travelMode;
                 str += "\n";
+                SmsManager smsManager = SmsManager.getDefault();
                 ArrayList<String> steplist = new ArrayList<String>();
 
                 GoogleDirections googleDirections = new GoogleDirections();
                 try {
                     steplist = googleDirections.getNewDirections(origin, destination, travelMode);
+                    if(steplist.size() == 0){
+                        smsManager.sendTextMessage(phoneNumber, null, "There is a problem with your query!", null, null);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
                 for (int j = 0; j < steplist.size(); j++) {
                     System.out.println(steplist.get(j));
                 }
-                SmsManager smsManager = SmsManager.getDefault();
+
+                smsManager.sendTextMessage(phoneNumber, null, "Start: " + origin, null, null);
+                smsManager.sendTextMessage(phoneNumber, null, "End: "+ destination, null, null);
+
+
                 for (int k = 0; k < steplist.size(); k++) {
                     smsManager.sendTextMessage(phoneNumber, null, steplist.get(k), null, null);
                 }
+                smsManager.sendTextMessage(phoneNumber, null, "You have reached your destination!!", null, null);
 
                 //---display the new SMS message---
                 Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
