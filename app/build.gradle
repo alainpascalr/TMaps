@@ -27,4 +27,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.1.0'
     testCompile 'junit:junit:4.12'
     compile 'com.akexorcist:googledirectionlibrary:1.0.4'
+    compile project(path: ':google-maps-services-java')
 }
