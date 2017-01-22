@@ -14,6 +14,8 @@ import static android.provider.Telephony.Sms.Intents.SMS_RECEIVED_ACTION;
  */
 public class SMSReceiver extends BroadcastReceiver{
 
+
+
     @Override
     public void onReceive(Context context, Intent intent) {
         //---get the SMS message passed in---

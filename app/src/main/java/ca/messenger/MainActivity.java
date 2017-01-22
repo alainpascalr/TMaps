@@ -35,12 +35,10 @@ public class MainActivity extends AppCompatActivity {
         registerReceiver(intentReceiver, intentFilter);
         super.onResume();
     }
-    @Override
-    protected void onPause() {
-        unregisterReceiver(intentReceiver);
-        super.onPause();
+
+    public void sendSMS(String phoneNumber, String smsBody){
+        SmsManager smsManager = SmsManager.getDefault();
+        smsManager.sendTextMessage(phoneNumber, null, smsBody, null, null);
     }
-
-
 }
 
