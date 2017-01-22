@@ -27,10 +27,25 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    //Yellow Pages
+    //Yellow Pages Main
     ProgressDialog progressDialog;
     Button getYellowPagesData;
     TextView yellowPagesResult;
+
+    //Yellow Pages Variables
+    String what = "Restaurants";
+    String where = "Toronto";
+    //Number of results to return in each page
+    int pgLen = 5;
+    //Radius in kilometer
+    int dist = 1;
+    //Set the language for the response. Permitted values are en or fr
+    String lang = "en";
+    // Format JSON OR XML
+    String fmt = "JSON";
+    String UID = "USER001";
+    //YellowAPI
+    String YellowAPI = "c8bk7t7ay794pynf7xxaapnh";
 
     IntentFilter intentFilter;
     private BroadcastReceiver intentReceiver = new BroadcastReceiver() {
@@ -67,15 +82,14 @@ public class MainActivity extends AppCompatActivity {
         //Get Yellow pages data
         getYellowPagesData = (Button) findViewById(R.id.btnHit);
         yellowPagesResult = (TextView) findViewById(R.id.tvJsonItem);
-
         getYellowPagesData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new JsonTask().execute("http://api.sandbox.yellowapi.com/FindBusiness/?what=Restaurants&where=Toronto&pgLen=5&pg=1&dist=1&fmt=JSON&lang=en&UID=USER001&apikey=c8bk7t7ay794pynf7xxaapnh\n");
+                new JsonTask().execute("http://api.sandbox.yellowapi.com/FindBusiness/?what="+what+"+&where="+where+"&pgLen="+pgLen+"&pg=1&dist="+dist+"&fmt="+fmt+"&lang="+lang+"&UID="+UID+"&apikey="+YellowAPI+"\n");
             }
         });
     }
-    
+
     @Override
     protected void onResume() {
         registerReceiver(intentReceiver, intentFilter);
