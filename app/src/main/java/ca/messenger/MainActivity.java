@@ -3,6 +3,9 @@
  */
 package ca.messenger;
 
+import android.Manifest;
+import android.annotation.TargetApi;
+import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -17,7 +20,7 @@ import android.content.BroadcastReceiver;
 import android.content.IntentFilter;
 import android.util.Log;
 import android.widget.TextView;
-
+import android.os.Build;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -47,19 +50,26 @@ public class MainActivity extends AppCompatActivity {
     //YellowAPI
     String YellowAPI = "c8bk7t7ay794pynf7xxaapnh";
 
+    private static final int PERMISSIONS_REQUEST_RECEIVE_SMS = 0;
     IntentFilter intentFilter;
-    private BroadcastReceiver intentReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            //---display the SMS received in the TextView---
-            TextView SMSes = (TextView) findViewById(R.id.textView1);
-            SMSes.setText(intent.getExtras().getString("sms"));
-        }
-    };
+    private BroadcastReceiver intentReceiver;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        {
+            methodFor23AndPlus();
+        }
+        intentReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                //---display the SMS received in the TextView---
+                TextView SMSes = (TextView) findViewById(R.id.textView1);
+                SMSes.setText(intent.getExtras().getString("sms"));
+            }
+        };
 
         // Check internet connection
         isInternetOn();
@@ -160,5 +170,12 @@ public class MainActivity extends AppCompatActivity {
             }
             yellowPagesResult.setText(result);
         }
+    }
+
+    @TargetApi(23)
+    void methodFor23AndPlus()
+    {
+        String[] permarr = new String[]{Manifest.permission.RECEIVE_SMS};
+        requestPermissions(permarr, PERMISSIONS_REQUEST_RECEIVE_SMS);
     }
 }
