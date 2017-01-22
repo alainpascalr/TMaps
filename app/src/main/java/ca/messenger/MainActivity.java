@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
     //Yellow Pages Variables
     String what = "Restaurants";
-//    String where = "Montreal";
+    String where = "Montreal";
     //Number of results to return in each page
     int pgLen = 5;
     //Radius in kilometer
@@ -69,9 +69,9 @@ public class MainActivity extends AppCompatActivity {
         //Variables
         ArrayList<String> steplist = new ArrayList<String>();
 
-        NewDirections newDirections = new NewDirections();
+        GoogleDirections googleDirections = new GoogleDirections();
         try {
-            steplist = newDirections.getNewDirections(origin, destination, mode);
+            steplist = googleDirections.getNewDirections(origin, destination, mode);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
         getYellowPagesData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new JsonTask().execute("http://api.sandbox.yellowapi.com/FindBusiness/?what="+what+"+&where="+destination+"&pgLen="+pgLen+"&pg=1&dist="+dist+"&fmt="+fmt+"&lang="+lang+"&UID="+UID+"&apikey="+YellowAPI+"\n");
+                new JsonTask().execute("http://api.sandbox.yellowapi.com/FindBusiness/?what="+what+"+&where="+where+"&pgLen="+pgLen+"&pg=1&dist="+dist+"&fmt="+fmt+"&lang="+lang+"&UID="+UID+"&apikey="+YellowAPI+"\n");
             }
         });
     }

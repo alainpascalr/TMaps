@@ -1,66 +1,65 @@
 /**
- * Created by Hamid Habib on 2017-01-22
+ * Created by Hamid Habib on 21/01/17
  */
 package ca.messenger;
 
-import android.content.Context;
-import android.location.Address;
-import android.location.Geocoder;
-import android.widget.Toast;
-import com.akexorcist.googledirection.DirectionCallback;
-import com.akexorcist.googledirection.GoogleDirection;
-import com.akexorcist.googledirection.model.Direction;
-import com.google.android.gms.maps.model.LatLng;
-import java.util.List;
+import android.app.Activity;
+import android.text.Html;
+import android.text.Layout;
 
-public class GoogleDirections {
+import com.akexorcist.googledirection.request.DirectionRequest;
+import com.google.maps.DirectionsApi;
+import com.google.maps.GeoApiContext;
+import com.google.maps.model.DirectionsResult;
+import com.google.maps.model.TravelMode;
 
-    public void getDirections(final Context context, String origin, String destination){
-        Geocoder coder = new Geocoder(context);
+import java.util.ArrayList;
 
-        List<Address> addressOrigin;
-        List<Address> addressDestination;
+public class GoogleDirections extends Activity{
 
-        LatLng geoOrigin = null;
-        LatLng geoDestination = null;
-        try {
-            addressOrigin = coder.getFromLocationName(origin, 5);
-            addressDestination = coder.getFromLocationName(destination, 5);
+    private GeoApiContext context;
 
-            Address locationOrigin = addressOrigin.get(0);
-            Address locationDestination = addressDestination.get(0);
+    public ArrayList<String> getNewDirections(String origin, String destination, String mode) throws Exception{
+        ArrayList<String> steplist = new ArrayList<String>();
+        String string;
+        String simplifiedHTMLString;
+        GeoApiContext gac = new GeoApiContext().setApiKey("AIzaSyDwdDONSqbgjvLvFqdzcnXE_sFeJ1Qw3Vs");
 
-            locationOrigin.getLatitude();
-            locationOrigin.getLongitude();
-
-            locationDestination.getLatitude();
-            locationDestination.getLongitude();
-
-            geoOrigin = new LatLng(locationOrigin.getLatitude(), locationOrigin.getLongitude());
-            geoDestination = new LatLng(locationDestination.getLatitude(), locationDestination.getLongitude());
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        DirectionsResult result;
+        if(mode.equalsIgnoreCase("Driving")){
+            result = DirectionsApi.newRequest(gac)
+                .mode(TravelMode.DRIVING)
+                .origin(origin)
+                .destination(destination).await();
+        }else if(mode.equalsIgnoreCase("Walking")){
+            result = DirectionsApi.newRequest(gac)
+                    .mode(TravelMode.WALKING)
+                    .origin(origin)
+                    .destination(destination).await();
+        }else if(mode.equalsIgnoreCase("bicycling")){
+            result = DirectionsApi.newRequest(gac)
+                    .mode(TravelMode.BICYCLING)
+                    .origin(origin)
+                    .destination(destination).await();
+        }else{
+            result = DirectionsApi.newRequest(gac)
+                    .mode(TravelMode.TRANSIT)
+                    .origin(origin)
+                    .destination(destination).await();
         }
 
-        GoogleDirection.withServerKey("AIzaSyDwdDONSqbgjvLvFqdzcnXE_sFeJ1Qw3Vs")
-                .from(geoOrigin)
-                .to(geoDestination)
-                .execute(new DirectionCallback() {
-                    @Override
-                    public void onDirectionSuccess(Direction direction, String rawBody) {
-                        if(direction.isOK()) {
-                            Toast toast = Toast.makeText(context, rawBody, Toast.LENGTH_LONG);
-                            toast.show();
-                            System.out.println("Index" + rawBody);
-                        } else {
-                            Toast toast = Toast.makeText(context, "FUCK OFF", Toast.LENGTH_LONG);
-                            toast.show();
-                        }
-                    }
-                    @Override
-                    public void onDirectionFailure(Throwable t) {
-                        // Do something
-                    }
-                });
+
+        for(int i = 0; i<result.routes[0].legs[0].steps.length; i++ ){
+            string = result.routes[0].legs[0].steps[i].htmlInstructions;
+//            string = result.routes[0].legs[0].steps[i].htmlInstructions + " for " + result.routes[0].legs[0].steps[i].distance;
+            simplifiedHTMLString =  string;
+            // Start index from 1 not zero
+            int index = i + 1;
+            String finalSteps = "Step: " + index + " " + Html.fromHtml(Html.fromHtml(simplifiedHTMLString).toString());
+            steplist.add(finalSteps);
+//            System.out.println(finalSteps);
+        }
+        return steplist;
     }
+
 }
