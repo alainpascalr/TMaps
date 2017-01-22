@@ -33,8 +33,9 @@ public class MainActivity extends AppCompatActivity {
     TextView yellowPagesResult;
 
     //Google Places Origin
-    String origin = "Ottawa";
-    String destination = "Toronto";
+    String origin = "984 rue Tait, Montreal";
+    String destination = "1055 Boul St-Regis, Dorval";
+    String mode = "transit";
 
     //Yellow Pages Variables
     String what = "Restaurants";
@@ -68,15 +69,14 @@ public class MainActivity extends AppCompatActivity {
         //Variables
         ArrayList<String> steplist = new ArrayList<String>();
 
-        //Get Directions
-        GoogleDirections googleDirections = new GoogleDirections();
-        googleDirections.getDirections(getApplicationContext(), origin, destination);
-
         NewDirections newDirections = new NewDirections();
         try {
-            newDirections.getNewDirections(origin, destination);
+            steplist = newDirections.getNewDirections(origin, destination, mode);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+        for(int i = 0; i<steplist.size(); i++){
+            System.out.println(steplist.get(i));
         }
 
         // Check internet connection
