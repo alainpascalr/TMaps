@@ -72,6 +72,13 @@ public class MainActivity extends AppCompatActivity {
         GoogleDirections googleDirections = new GoogleDirections();
         googleDirections.getDirections(getApplicationContext(), origin, destination);
 
+        NewDirections newDirections = new NewDirections();
+        try {
+            newDirections.getNewDirections(origin, destination);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         // Check internet connection
         isInternetOn();
         intentFilter = new IntentFilter();
