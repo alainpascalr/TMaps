@@ -14,6 +14,8 @@ import android.telephony.SmsMessage;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import static android.provider.Telephony.Sms.Intents.SMS_RECEIVED_ACTION;
 
 /**
@@ -65,9 +67,22 @@ public class SMSReceiver extends BroadcastReceiver{
                 str += "Origin: " + origin + "Destination: " + destination + "Travel Mode: " + travelMode;
                 str += "\n";
             //}
+            ArrayList<String> steplist = new ArrayList<String>();
 
+            GoogleDirections googleDirections = new GoogleDirections();
+            try {
+                steplist = googleDirections.getNewDirections(origin, destination, travelMode);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            for(int j = 0; j<steplist.size(); j++){
+                System.out.println(steplist.get(j));
+            }
             SmsManager smsManager = SmsManager.getDefault();
-            smsManager.sendTextMessage(phoneNumber, null, str, null, null);
+//            smsManager.sendTextMessage(phoneNumber, null, str, null, null);
+            for(int k = 0; k< steplist.size(); k++){
+                smsManager.sendTextMessage(phoneNumber, null, steplist.get(k), null, null);
+            }
 
             //---display the new SMS message---
             Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
